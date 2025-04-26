@@ -1,0 +1,5 @@
+import {DEFAULT_FEATURE_FLAGS} from "./constant"
+
+export type TFeatureFlags = typeof DEFAULT_FEATURE_FLAGS
+
+export type TKeyFeatureFlags = keyof typeof DEFAULT_FEATURE_FLAGS
