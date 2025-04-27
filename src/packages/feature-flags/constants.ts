@@ -9,3 +9,8 @@ export const DEFAULT_FEATURE_FLAGS = {
   show_string: 'its me',
   show_number: 111
 }
+
+export const MINIMUM_FETCH_INTERVAL_MILLIS = 1000*5
+export const FETCH_TIME_MILLIS = 1000*5
+export const TEST_USER = 'gedsonmarcelino'
+

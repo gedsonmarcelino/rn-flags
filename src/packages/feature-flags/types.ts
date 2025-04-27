@@ -1,4 +1,4 @@
-import {DEFAULT_FEATURE_FLAGS} from "./constant"
+import {DEFAULT_FEATURE_FLAGS} from "./constants"
 
 export type TFeatureFlags = typeof DEFAULT_FEATURE_FLAGS
 
