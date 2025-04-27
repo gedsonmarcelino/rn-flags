@@ -1,7 +1,7 @@
 import {fetchAndActivate, getRemoteConfig} from '@react-native-firebase/remote-config';
-import {DEFAULT_FEATURE_FLAGS, FETCH_TIME_MILLIS, MINIMUM_FETCH_INTERVAL_MILLIS, TEST_USER} from './constants';
+import {DEFAULT_FEATURE_FLAGS, FETCH_TIME_MILLIS, KEY_PROD_TEST, MINIMUM_FETCH_INTERVAL_MILLIS, TEST_USER} from './constants';
 
-import {TKeyFeatureFlags} from './types';
+import {TKeyFeatureFlags, TKeyProdTest} from './types';
 import {app} from '../firebase';
 
 const remoteConfig = getRemoteConfig(app); 
@@ -17,8 +17,11 @@ export const initRemoteConfig = async () => {
 }
 
 const hasProdTest = (key: TKeyFeatureFlags) => {
-  const flagProdTest = JSON.parse(remoteConfig.getValue("prod_test").asString()) || DEFAULT_FEATURE_FLAGS['prod_test']
-  const users = flagProdTest?.users || []
+  let flagProdTest: TKeyProdTest = DEFAULT_FEATURE_FLAGS[KEY_PROD_TEST]
+  try {
+    flagProdTest = JSON.parse(remoteConfig.getValue(KEY_PROD_TEST).asString()) 
+  } catch { }
+  const users = (flagProdTest?.users || []) as string[]
 
   if ( users.includes(TEST_USER) && key in flagProdTest ){
     console.log('value :>> ', flagProdTest[key]);

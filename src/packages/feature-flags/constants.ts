@@ -12,5 +12,7 @@ export const DEFAULT_FEATURE_FLAGS = {
 
 export const MINIMUM_FETCH_INTERVAL_MILLIS = 1000*5
 export const FETCH_TIME_MILLIS = 1000*5
+
+export const  KEY_PROD_TEST = 'prod_test'
 export const TEST_USER = 'gedsonmarcelino'
 
