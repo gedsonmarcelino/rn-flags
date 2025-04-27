@@ -1,50 +1,112 @@
-# Welcome to your Expo app 👋
+# React Native Firebase Remote Config Example
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This repository demonstrates a **React Native** implementation of **Firebase Remote Config**, with focus on:
 
-## Get started
+- [`src/packages/feature-flags/`](./src/packages/feature-flags/): **Feature flag system**
+- [`src/components/FeatureFlag/`](./src/components/FeatureFlag/): **Feature flag component abstraction**
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 📂 Project Structure
 
 ```bash
-npm run reset-project
+src/
+  components/
+    FeatureFlag/        # Component to conditionally render based on a feature flag
+  packages/
+    feature-flags/      # Hooks, types, utilities for feature flagging
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 📌 Features
 
-To learn more about developing your project with Expo, look at the following resources:
+- Fetch and activate remote config from Firebase
+- Use feature flags easily inside React Native components
+- Strong TypeScript typings for feature keys
+- Example of how to create reusable feature flagged components
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## 🛠️ Getting Started
 
-Join our community of developers creating universal apps.
+### 1. Install Dependencies
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm install
+```
+
+### 2. Configure Firebase
+
+Make sure you have your Firebase project configured.
+
+Use [`@react-native-firebase/app`](https://rnfirebase.io/) and [`@react-native-firebase/remote-config`](https://rnfirebase.io/remote-config/usage) libraries.
+
+```bash
+yarn add @react-native-firebase/app @react-native-firebase/remote-config
+```
+
+Set your Google Services files:
+- `google-services.json` for Android
+- `GoogleService-Info.plist` for iOS
+
+---
+
+## ⚡ Usage Example
+
+### Using the `FeatureFlag` component
+
+```tsx
+import { FeatureFlag } from '@/components/FeatureFlag';
+
+export function Home() {
+  return (
+    <FeatureFlag flag="show_explore">
+      <NewHomeScreen />
+    </FeatureFlag>
+  );
+}
+```
+
+Or using the `getFeatureFlag` function directly:
+
+```tsx
+import { getFeatureFlag } from '@/packages/feature-flags';
+
+const isFeatureEnabled = getFeatureFlag('new_homepage');
+
+if (isFeatureEnabled) {
+  // Feature-specific logic here
+}
+```
+
+## Default Values
+
+The feature flag keys and their default values are defined in:
+
+- **Constants file**: [`src/packages/feature-flags/constants.ts`](src/packages/feature-flags/constants.ts)
+
+This file contains:
+
+- `DEFAULT_FEATURE_FLAGS` — An object with all the feature flags and their default fallback values.
+
+Example:
+
+```ts
+export const DEFAULT_VALUES = {
+  show_json : { id: '111' },
+  show_string: 'its me',
+  show_number: 111
+};
+```
+
+This structure enforces safe access to remote config values throughout the project.
+---
+
+## 📄 License
+
+MIT © [Gedson Marcelino](https://github.com/gedsonmarcelino)
+
+---
+
+> Built with ❤️ using React Native & Firebase.
