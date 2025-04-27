@@ -19,7 +19,19 @@ const initRemoteConfig = async () => {
 
 initRemoteConfig()
 
-export const getFeatureFlag = (key: TKeyFeatureFlags) => {
+const TEST_USER = 'jedi'
+
+const hasProdTest = (key: TKeyFeatureFlags) => {
+  const flagProdTest = JSON.parse(remoteConfig.getValue("prod_test").asString()) || DEFAULT_FEATURE_FLAGS['prod_test']
+  const users = flagProdTest?.users || []
+
+  if ( users.includes(TEST_USER) && key in flagProdTest ){
+    return flagProdTest[key]
+  }
+  return undefined;
+}
+
+const getFeatureFlagFromRemoteConfig = (key:TKeyFeatureFlags) => {
   const valueDefault = DEFAULT_FEATURE_FLAGS[key];
   const value = remoteConfig.getValue(key)
   
@@ -36,4 +48,12 @@ export const getFeatureFlag = (key: TKeyFeatureFlags) => {
   }
 
   return JSON.parse(value.asString()) || {}
+}
+
+export const getFeatureFlag = (key: TKeyFeatureFlags) => {
+  const valueProdTest = hasProdTest(key)
+  if ( valueProdTest !== undefined ) {
+    return valueProdTest
+  }
+  return getFeatureFlagFromRemoteConfig(key)  
 };
